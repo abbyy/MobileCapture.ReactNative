@@ -1,0 +1,13 @@
+<resources>
+    <!-- Begin. Don't rename. These keys are public API. -->
+
+    <!-- UI Components / ReactNative / Image Capture -> uic_rn_ic, prefix to exclude resource collision -->
+    <string name="uic_rn_ic_delete_on_cancel_warning_title">Discard pages</string>
+    <string name="uic_rn_ic_delete_on_cancel_warning_message">You will lose captured pages</string>
+    <string name="uic_rn_ic_delete_on_cancel_warning_negative_button">Cancel</string>
+    <string name="uic_rn_ic_delete_on_cancel_warning_positive_button">Discard</string>
+
+    <string name="uic_rn_ic_saving_pages_warning_message">Saving pages…</string>
+
+    <!-- End. Don't rename. These keys are public API. -->
+</resources>

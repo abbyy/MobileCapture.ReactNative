@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.abbyy.rtr.reactnative">
+
+    <application>
+        <activity android:name=".image.ImageCaptureActivity" />
+    </application>
+
+</manifest>
