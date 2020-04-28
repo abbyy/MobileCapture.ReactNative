@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.abbyy.rtr.reactnative">
+    package="com.abbyy.mobile.rtr.reactnative">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
         <activity android:name=".image.ImageCaptureActivity" />

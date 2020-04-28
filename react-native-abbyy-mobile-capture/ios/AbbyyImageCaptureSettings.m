@@ -6,6 +6,8 @@
 #import <AbbyyUI/AbbyyUI.h>
 #import <React/RCTLog.h>
 
+#import "RTRPluginConstants.h"
+
 @implementation AbbyyImageCaptureSettings
 
 - (instancetype)initWithReactSettings:(NSDictionary*)settings error:(NSError**)error;
@@ -41,7 +43,7 @@
 	_requiredPageCount = [input rtr_parseReactInt:@"requiredPageCount" defaultValue:0 error:error];
 	_isShowPreviewEnabled = [input rtr_parseReactBool:@"isShowPreviewEnabled" defaultValue:NO error:error];
 
-	NSDictionary* imageSettings = input[@"defaultImageSettings"];
+	NSDictionary* imageSettings = input[@"defaultImageSettings"] ?: @{};
 	_minimumDocumentToViewRatio =  [imageSettings rtr_parseReactFloat:@"minimumDocumentToViewRatio" defaultValue:0.15 error:error];
 	_documentSize = [self documentSizeFromString:imageSettings[@"documentSize"] error:error];
 	_aspectRatioMin = [imageSettings rtr_parseReactFloat:@"aspectRationMin" defaultValue:0. error:error];
@@ -80,9 +82,6 @@
 	if(self.destinationType == AICDestintationTypeBase64 && self.requiredPageCount != 1) {
 		description = [NSString stringWithFormat:@"Base64 works only with requiredPageCount equals to 1"];
 	}
-	if(self.destinationType == AICDestintationTypeBase64 && self.exportFormat != AICExportFormatJpg) {
-		description = [NSString stringWithFormat:@"Base64 works only with Jpg export format"];
-	}
 	if(self.minimumDocumentToViewRatio < 0 || self.minimumDocumentToViewRatio > 1) {
 		description = [NSString stringWithFormat:@"Min document to view ratio should be from 0 to 1"];
 	}
@@ -91,7 +90,7 @@
 	}
 	if(description != nil) {
 		NSDictionary* userInfo = @{NSLocalizedDescriptionKey: description};
-		*error = [NSError errorWithDomain:@"ABBYY" code:-1 userInfo:userInfo];
+		*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
 		return NO;
 	}
 	return YES;
@@ -134,7 +133,7 @@
 			RCTLog(@"%@", description);
 			if(error != nil) {
 				NSDictionary* userInfo = @{NSLocalizedDescriptionKey: description};
-				*error = [NSError errorWithDomain:@"ABBYY" code:-1 userInfo:userInfo];
+				*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
 			}
 			return AUIDocumentSizeAny;
 		}

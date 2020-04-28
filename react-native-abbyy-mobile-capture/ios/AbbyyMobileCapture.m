@@ -6,12 +6,13 @@
 #import <React/RCTLog.h>
 #import <React/RCTUtils.h>
 #import "AbbyyImageCapture.h"
+#import "AbbyyCoreAPI.h"
 #import "NSDictionary+parseReactTypes.h"
+#import "RTRPluginConstants.h"
 
 @interface AbbyyMobileCapture ()
 
 @property (nonatomic, strong, null_resettable) AbbyyImageCapture* imageCapture;
-@property (nonatomic, copy) NSDictionary<NSString*, id>* settings;
 
 @end
 
@@ -27,13 +28,13 @@
 	return topController;
 }
 
-- (BOOL)createRTREngine:(NSError**)error
+- (BOOL)createRTREngineWithSettings:(NSDictionary*)settings error:(NSError**)error
 {
 	if(_rtrEngine != nil) {
 		return YES;
 	}
 
-	NSString* licenseFilename = self.settings[@"licenseFileName"];
+	NSString* licenseFilename = settings[RTRLicenseFileNameKey];
 	if(licenseFilename == nil) {
 		RCTLog(@"Warning license filename unknown. Default filename used.");
 		licenseFilename = @"MobileCapture.License";
@@ -44,7 +45,7 @@
 	_rtrEngine = [RTREngine sharedEngineWithLicenseData:data];
 	if(_rtrEngine == nil && error != nil ) {
 		NSDictionary* userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Invalid license", nil)};
-		*error = [NSError errorWithDomain:@"User" code:0 userInfo:userInfo];
+		*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
 	}
 	return _rtrEngine != nil;
 }
@@ -66,11 +67,91 @@ RCT_EXPORT_MODULE();
 }
 
 RCT_REMAP_METHOD(startImageCapture,
-                 startImageCaptureWithSetings:(NSDictionary*)settings resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+	startImageCaptureWithSetings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
 {
-	self.settings = settings;
 	[self.imageCapture startImageCaptureWithSetings:settings resolver:resolve rejecter:reject];
 }
 
-@end
+RCT_REMAP_METHOD(recognizeText,
+	recognizeTextWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
+{
+	AbbyyCoreAPI* coreAPI = [[AbbyyCoreAPI alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[coreAPI recognizeText];
+}
 
+RCT_REMAP_METHOD(extractData,
+	extractDataWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
+{
+	AbbyyCoreAPI* coreAPI = [[AbbyyCoreAPI alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[coreAPI extractData];
+}
+
+RCT_REMAP_METHOD(detectDocumentBoundary,
+	detectDocumentBoundaryWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
+{
+	AbbyyCoreAPI* coreAPI = [[AbbyyCoreAPI alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[coreAPI detectDocumentBoundary];
+}
+
+RCT_REMAP_METHOD(cropImage,
+	cropImageWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
+{
+	AbbyyCoreAPI* coreAPI = [[AbbyyCoreAPI alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[coreAPI cropImage];
+}
+
+RCT_REMAP_METHOD(rotateImage,
+	rotateImageWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
+{
+	AbbyyCoreAPI* coreAPI = [[AbbyyCoreAPI alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[coreAPI rotateImage];
+}
+
+RCT_REMAP_METHOD(assessQualityForOcr,
+	assessQualityForOcrWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
+{
+	AbbyyCoreAPI* coreAPI = [[AbbyyCoreAPI alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[coreAPI assessQualityForOcr];
+}
+
+RCT_REMAP_METHOD(exportImage,
+	exportImageWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
+{
+	AbbyyCoreAPI* coreAPI = [[AbbyyCoreAPI alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[coreAPI exportImage];
+}
+
+RCT_REMAP_METHOD(exportImagesToPdf,
+	exportImagesToPdfWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject)
+{
+	AbbyyCoreAPI* coreAPI = [[AbbyyCoreAPI alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[coreAPI exportImagesToPdf];
+}
+
+@end

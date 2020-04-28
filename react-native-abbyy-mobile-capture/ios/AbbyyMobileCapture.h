@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AbbyyMobileCapture : NSObject <RCTBridgeModule>
 
 - (UIViewController*)topViewController;
-- (BOOL)createRTREngine:(NSError**)error;
+- (BOOL)createRTREngineWithSettings:(NSDictionary*)settings error:(NSError**)error;
 
 @property (nonatomic, strong, nullable, readonly) RTREngine* rtrEngine;
 

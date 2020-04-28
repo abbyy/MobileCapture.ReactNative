@@ -1,7 +1,7 @@
 {
   "name": "react-native-abbyy-mobile-capture",
   "title": "React Native ABBYY Mobile Capture",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React Native ABBYY Mobile Capture",
   "main": "index.js",
   "scripts": {
@@ -13,23 +13,25 @@
     "baseUrl": "https://github.com/abbyy/MobileCapture.ReactNative"
   },
   "keywords": [
-	"abbyy", 
-	"mobile", 
-	"image", 
-	"capture", 
-	"rtr", 
-	"real time",
-	"recognition",
-	"mobile capture",
-	"mobile sdk",
-	"OCR",
-	"optical character recognition",
-	"ocr-engine",
-	"react-native",
-	"reactnative",
-	"data capture",
-	"image capture",
-	"ecosystem:react-native"
+    "react-native",
+    "abbyy", 
+    "mobile",
+    "capture",
+    "mobile capture",
+    "mobile sdk",
+    "OCR",
+    "recognition",
+    "optical character recognition",
+    "ocr-engine",
+    "reactnative",
+    "data capture",
+    "image capture",
+    "text capture",
+    "pdf",
+    "ecosystem:react-native",
+    "rtr",
+    "sdk",
+    "real time"
   ],
   "author": {
     "name": "ABBYY",
@@ -46,5 +48,6 @@
     "react": "^16.8.3",
     "react-native": "^0.60.0"
   },
-  "dependencies": {}
+  "dependencies": {
+  }
 }

@@ -34,7 +34,28 @@ buildscript {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:3.4.1'
+            // https://github.com/bjoernQ/unmock-plugin
+            classpath 'de.mobilej.unmock:UnMockPlugin:0.7.3'
+            // https://github.com/arturdm/jacoco-android-gradle-plugin
+            classpath "com.dicedmelon.gradle:jacoco-android:0.1.4"
         }
+    }
+}
+
+if (project == rootProject) {
+    // https://github.com/bjoernQ/unmock-plugin
+    apply plugin: 'de.mobilej.unmock'
+    apply plugin: 'jacoco-android'
+
+    jacoco {
+        toolVersion = '0.8.4'
+    }
+
+    jacocoAndroidUnitTestReport {
+        csv.enabled false
+        xml.enabled false
+        html.enabled true
+        excludes += ['android/**', 'androidx/**', ]
     }
 }
 
@@ -90,15 +111,27 @@ dependencies {
     // nor does it pose any restrictions to the language you are using.
     // This is a regular library dependency.
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.31"
-
-    testImplementation "junit:junit:4.12"
 }
 
 // For testing
 if (project == rootProject) {
+
+    unMock {
+        keep "android.graphics.Rect"
+        keep "org.json.JSONObject"
+        keep "org.json.JSONArray"
+        keep "org.json.JSONException"
+        keep "org.json.JSON"
+        keep "android.os.Rect"
+        keep "android.graphics.Point"
+    }
+
 	dependencies {
 		implementation(name: 'abbyy-mi-sdk-2.0', ext: 'aar')
     	implementation(name: 'abbyy-ui-1.0', ext: 'aar')
+
+        testImplementation "junit:junit:4.12"
+        unmock 'org.robolectric:android-all:7.1.0_r7-robolectric-0'
 	}
 }
 

@@ -7,6 +7,7 @@
 #import <AbbyyUI/AbbyyUI.h>
 #import <AbbyyRtrSDK/AbbyyRtrSDK.h>
 #import "AbbyyImageCaptureSettings.h"
+#import "RTRCoreApiPluginAdapter.h"
 
 @interface AbbyyImageCaptureController: AUICaptureController
 @property (nonatomic, assign) UIInterfaceOrientationMask orientationMask;
@@ -65,7 +66,7 @@
 	self.rctResolve = resolve;
 	self.rctReject = reject;
 
-	if(self.mobileCapture.rtrEngine == nil && ![self.mobileCapture createRTREngine:&error]) {
+	if(self.mobileCapture.rtrEngine == nil && ![self.mobileCapture createRTREngineWithSettings:settings error:&error]) {
 		NSParameterAssert(error != nil);
 		[self reactRejectWithError:error];
 		return;
@@ -292,6 +293,11 @@ static NSString* localized(NSString* string)
 		}
 		exportDict[@"images"] = images;
 	}
+	exportDict[@"resultInfo"] = @{
+		@"uriPrefix": [RTRCoreApiPluginAdapter
+			uriPrefixForDestination:self.settings.destinationString
+			extension:self.settings.exportFormatString],
+	};
 	completion(exportDict, nil);
 }
 
@@ -358,7 +364,7 @@ static NSString* localized(NSString* string)
 		[images addObject:@{
 			@"filePath": filePath,
 			@"resultInfo": @{
-				@"size": @{ @"width": @((NSInteger) imageSize.width), @"height": @((NSInteger) imageSize.height) },
+				@"imageSize": @{ @"width": @((NSInteger) imageSize.width), @"height": @((NSInteger) imageSize.height) },
 				@"exportType": [self.settings exportFormatString],
 				@"fileSize": ((NSNumber*)fileAttributes[NSFileSize]).stringValue,
 			}
@@ -424,7 +430,7 @@ static NSString* localized(NSString* string)
 
 	return [self exportSingleImageBase64:image info:@{
 		@"exportType": [self.settings exportFormatString],
-		@"size": @{ @"width": @((NSInteger) imageSize.width), @"height": @((NSInteger) imageSize.height) },
+		@"imageSize": @{ @"width": @((NSInteger) imageSize.width), @"height": @((NSInteger) imageSize.height) },
 	} error:error];
 }
 

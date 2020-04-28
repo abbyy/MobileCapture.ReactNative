@@ -2,6 +2,7 @@
 /// ABBYY is a registered trademark or a trademark of ABBYY Software Ltd.
 
 #import "NSDictionary+parseReactTypes.h"
+#import "RTRPluginConstants.h"
 
 @implementation NSDictionary (rtr_parseReactTypes)
 
@@ -39,7 +40,7 @@
 	if(error != nil) {
 		NSString* description = [NSString stringWithFormat:@"Value '%@' for key '%@' is not of class '%@'", value, key, NSStringFromClass(class)];
 		NSDictionary* userInfo = @{NSLocalizedDescriptionKey: description};
-		*error = [NSError errorWithDomain:@"ABBYY" code:-1 userInfo:userInfo];
+		*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
 	}
 	return NO;
 }
@@ -69,7 +70,7 @@
 	if(error != nil && index == NSNotFound) {
 		NSString* description = [NSString stringWithFormat:@"Failed to parse value '%@' for key '%@'", value, key];
 		NSDictionary* userInfo = @{NSLocalizedDescriptionKey: description};
-		*error = [NSError errorWithDomain:@"ABBYY" code:-1 userInfo:userInfo];
+		*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
 	}
 
 	return index;
