@@ -182,7 +182,7 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
-  - react-native-abbyy-mobile-capture (1.0.0):
+  - react-native-abbyy-mobile-capture (1.0.1):
     - React
   - React-RCTActionSheet (0.61.5):
     - React-Core/RCTActionSheetHeaders (= 0.61.5)
@@ -331,7 +331,7 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-abbyy-mobile-capture: b63eea41528ed2f24981ab63432e113d5c3a007f
+  react-native-abbyy-mobile-capture: 434e34937f0c234563eb2c66675bb1a2e1010ab3
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
@@ -345,6 +345,6 @@ SPEC CHECKSUMS:
   RNPDF: 96fe99f55787456ba2f7df44a866a0baf98aaf84
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 6db9e3ffe816bcc79869f4266efb1f7c7941d3fa
+PODFILE CHECKSUM: 32c151633ce4db4685a913152981d4d47c769e53
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

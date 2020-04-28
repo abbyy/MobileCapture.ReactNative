@@ -1,6 +1,6 @@
 {
-  "name": "sample-ui-imagecapture",
-  "version": "0.0.1",
+  "name": "react-native-abbyy-mobile-capture-sample-ui-imagecapture",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -9,6 +9,34 @@
     "test": "jest",
     "lint": "eslint ."
   },
+  "keywords": [
+    "react-native",
+    "abbyy", 
+    "mobile",
+    "capture",
+    "mobile capture",
+    "mobile sdk",
+    "OCR",
+    "recognition",
+    "optical character recognition",
+    "ocr-engine",
+    "reactnative",
+    "data capture",
+    "image capture",
+    "text capture",
+    "pdf",
+    "ecosystem:react-native",
+    "rtr",
+    "sdk",
+    "real time"
+  ],
+  "author": {
+    "name": "ABBYY",
+    "email": "sdk@abbyy.com"
+  },
+  "license": "custom",
+  "licenseFilename": "LICENSE.md",
+  "readmeFilename": "README.md",
   "dependencies": {
     "react": "16.9.0",
     "react-native": "0.61.5",

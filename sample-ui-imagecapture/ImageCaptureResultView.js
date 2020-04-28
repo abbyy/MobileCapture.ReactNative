@@ -21,6 +21,7 @@ export default props => {
   let imageView = null;
   let pdfInfo = props.result.pdfInfo;
   let images = props.result.images;
+  let resultInfo = props.result.resultInfo;
   if(pdfInfo) {
     let filePath = pdfInfo.filePath;
     if(Platform.OS === 'ios') {
@@ -54,18 +55,18 @@ export default props => {
       data={props.result.images}
       keyExtractor={(item, index) => '' +index}
       renderItem={({item}) => {
-        return (<Image style={styles.image} source={imageSource(item)} onError={({nativeEvent: {error}}) => console.log('Failed to render image: ', error)} />);
+        return (<Image style={styles.image} source={imageSource(resultInfo.uriPrefix, item)} onError={({nativeEvent: {error}}) => console.log('Failed to render image: ', error)} />);
       }} 
     />
     );
   }
 
-  const imageSource = item => {
+  const imageSource = (uriPrefix, item) => {
     let uriValue = null;
     if(item.filePath) {
-      uriValue = `file://${item.filePath}`;
+      uriValue = uriPrefix + item.filePath;
     } else {
-      uriValue = `data:image/${item.resultInfo.exportType};base64,${item.base64}`;
+      uriValue = uriPrefix + item.base64;
     }
     return {uri: uriValue}
   };
