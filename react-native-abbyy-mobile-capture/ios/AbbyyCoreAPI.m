@@ -18,7 +18,7 @@
 	rejecter:(RCTPromiseRejectBlock)reject
 {
 	self = [super init];
-	if(self!= nil) {
+	if(self != nil) {
 		NSError* error = nil;
 		if(mobileCapture.rtrEngine == nil && ![mobileCapture createRTREngineWithSettings:settings error:&error]) {
 			NSParameterAssert(error != nil);

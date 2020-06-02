@@ -3,7 +3,6 @@
 
 #import "RTRPluginConstants.h"
 
-NSString* const RTRPluginErrorDomain = @"com.abbyy.rtr-reactnative-module";
 NSString* const RTRRecognitionLanguagesKey = @"recognitionLanguages";
 NSString* const RTRSelectableRecognitionLanguagesKey = @"selectableRecognitionLanguages";
 NSString* const RTRLicenseFileNameKey = @"licenseFileName";
@@ -30,6 +29,9 @@ NSString* const RTRICCameraResolutionKey = @"cameraResolution";
 NSString* const RTRICFlashlightButtonVisibleKey = @"isFlashlightButtonVisible";
 NSString* const RTRICCaptureButtonVisibleKey = @"isCaptureButtonVisible";
 NSString* const RTRICGalleryButtonVisibleKey = @"isGalleryButtonVisible";
+NSString* const RTRICImageFromGalleryMaxSize = @"imageFromGalleryMaxSize";
+NSString* const RTRICAspectRatioMin = @"aspectRatioMin";
+NSString* const RTRICAspectRatioMax = @"aspectRatioMax";
 NSString* const RTRICShowPreviewKey = @"showPreview";
 NSString* const RTRICImagesCountKey = @"maxImagesCount";
 NSString* const RTRICRequiredPageCountKey = @"requiredPageCount";

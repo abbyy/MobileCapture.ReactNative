@@ -10,9 +10,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AbbyyImageCapture : NSObject
 
-- (instancetype)initWithMobileCapture:(AbbyyMobileCapture*)mobileCapture;
+@property (nonatomic, copy, nullable) NSDictionary* settings;
+@property (nonatomic, copy, nullable) RCTPromiseResolveBlock rctResolve;
+@property (nonatomic, copy, nullable) RCTPromiseRejectBlock rctReject;
 
-- (void)startImageCaptureWithSetings:(NSDictionary*)settings resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject;
+- (instancetype)initWithMobileCapture:(AbbyyMobileCapture*)mobileCapture
+	settings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)startImageCapture;
 
 @end
 

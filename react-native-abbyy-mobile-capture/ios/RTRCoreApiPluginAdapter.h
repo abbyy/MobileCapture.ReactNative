@@ -45,12 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 	onError:(void(^)(NSError*))onError
 	onSuccess:(void(^)(NSDictionary*))onSuccess;
 
-#pragma mark -
-
-+ (NSString*)mimeForFileExtension:(NSString*)extension;
-
-+ (NSString*)uriPrefixForDestination:(NSString*)destination extension:(nullable NSString*)extension;
-
 @end
 
 NS_ASSUME_NONNULL_END

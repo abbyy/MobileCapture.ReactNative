@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7CE5096A23E861050054E289 /* NSDictionary+parseReactTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE5096423E861040054E289 /* NSDictionary+parseReactTypes.m */; };
 		7CE5096B23E861050054E289 /* AbbyyImageCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE5096723E861040054E289 /* AbbyyImageCapture.m */; };
-		7CE5096C23E861050054E289 /* AbbyyImageCaptureSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE5096823E861040054E289 /* AbbyyImageCaptureSettings.m */; };
 		7CE5096D23E861050054E289 /* AbbyyMobileCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE5096923E861050054E289 /* AbbyyMobileCapture.m */; };
+		92B13304246AE038000FFDDF /* RTRImageCaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B132FE246AE037000FFDDF /* RTRImageCaptureViewController.m */; };
+		92B13305246AE038000FFDDF /* RTRExportUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B13300246AE038000FFDDF /* RTRExportUtilities.m */; };
+		92B13306246AE038000FFDDF /* RTRImageCapturePluginAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B13303246AE038000FFDDF /* RTRImageCapturePluginAdapter.m */; };
 		92F24E23244873570090D7D3 /* RTRPluginConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F24E1D244873570090D7D3 /* RTRPluginConstants.m */; };
 		92F24E24244873570090D7D3 /* RTRCoreApiPluginAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F24E1E244873570090D7D3 /* RTRCoreApiPluginAdapter.m */; };
 		92F24E25244873570090D7D3 /* AbbyyCoreAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F24E1F244873570090D7D3 /* AbbyyCoreAPI.m */; };
@@ -31,14 +32,16 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libMobileCapture.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMobileCapture.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		7CE5096223E861040054E289 /* AbbyyImageCaptureSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbbyyImageCaptureSettings.h; sourceTree = "<group>"; };
 		7CE5096323E861040054E289 /* AbbyyImageCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbbyyImageCapture.h; sourceTree = "<group>"; };
-		7CE5096423E861040054E289 /* NSDictionary+parseReactTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+parseReactTypes.m"; sourceTree = "<group>"; };
 		7CE5096523E861040054E289 /* AbbyyMobileCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbbyyMobileCapture.h; sourceTree = "<group>"; };
-		7CE5096623E861040054E289 /* NSDictionary+parseReactTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+parseReactTypes.h"; sourceTree = "<group>"; };
 		7CE5096723E861040054E289 /* AbbyyImageCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbbyyImageCapture.m; sourceTree = "<group>"; };
-		7CE5096823E861040054E289 /* AbbyyImageCaptureSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbbyyImageCaptureSettings.m; sourceTree = "<group>"; };
 		7CE5096923E861050054E289 /* AbbyyMobileCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbbyyMobileCapture.m; sourceTree = "<group>"; };
+		92B132FE246AE037000FFDDF /* RTRImageCaptureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTRImageCaptureViewController.m; sourceTree = "<group>"; };
+		92B132FF246AE037000FFDDF /* RTRImageCapturePluginAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTRImageCapturePluginAdapter.h; sourceTree = "<group>"; };
+		92B13300246AE038000FFDDF /* RTRExportUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTRExportUtilities.m; sourceTree = "<group>"; };
+		92B13301246AE038000FFDDF /* RTRExportUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTRExportUtilities.h; sourceTree = "<group>"; };
+		92B13302246AE038000FFDDF /* RTRImageCaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTRImageCaptureViewController.h; sourceTree = "<group>"; };
+		92B13303246AE038000FFDDF /* RTRImageCapturePluginAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTRImageCapturePluginAdapter.m; sourceTree = "<group>"; };
 		92F24E1B244873570090D7D3 /* AbbyyCoreAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbbyyCoreAPI.h; sourceTree = "<group>"; };
 		92F24E1C244873570090D7D3 /* RTRPluginConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTRPluginConstants.h; sourceTree = "<group>"; };
 		92F24E1D244873570090D7D3 /* RTRPluginConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTRPluginConstants.m; sourceTree = "<group>"; };
@@ -75,16 +78,18 @@
 				92F24E1F244873570090D7D3 /* AbbyyCoreAPI.m */,
 				7CE5096323E861040054E289 /* AbbyyImageCapture.h */,
 				7CE5096723E861040054E289 /* AbbyyImageCapture.m */,
-				7CE5096223E861040054E289 /* AbbyyImageCaptureSettings.h */,
-				7CE5096823E861040054E289 /* AbbyyImageCaptureSettings.m */,
 				7CE5096523E861040054E289 /* AbbyyMobileCapture.h */,
 				7CE5096923E861050054E289 /* AbbyyMobileCapture.m */,
-				7CE5096623E861040054E289 /* NSDictionary+parseReactTypes.h */,
-				7CE5096423E861040054E289 /* NSDictionary+parseReactTypes.m */,
 				92F24E21244873570090D7D3 /* NSDictionary+RTRSettings.h */,
 				92F24E22244873570090D7D3 /* NSDictionary+RTRSettings.m */,
 				92F24E20244873570090D7D3 /* RTRCoreApiPluginAdapter.h */,
 				92F24E1E244873570090D7D3 /* RTRCoreApiPluginAdapter.m */,
+				92B13301246AE038000FFDDF /* RTRExportUtilities.h */,
+				92B13300246AE038000FFDDF /* RTRExportUtilities.m */,
+				92B132FF246AE037000FFDDF /* RTRImageCapturePluginAdapter.h */,
+				92B13303246AE038000FFDDF /* RTRImageCapturePluginAdapter.m */,
+				92B13302246AE038000FFDDF /* RTRImageCaptureViewController.h */,
+				92B132FE246AE037000FFDDF /* RTRImageCaptureViewController.m */,
 				92F24E1C244873570090D7D3 /* RTRPluginConstants.h */,
 				92F24E1D244873570090D7D3 /* RTRPluginConstants.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -151,11 +156,12 @@
 				7CE5096B23E861050054E289 /* AbbyyImageCapture.m in Sources */,
 				92F24E23244873570090D7D3 /* RTRPluginConstants.m in Sources */,
 				92F24E24244873570090D7D3 /* RTRCoreApiPluginAdapter.m in Sources */,
+				92B13305246AE038000FFDDF /* RTRExportUtilities.m in Sources */,
 				92F24E25244873570090D7D3 /* AbbyyCoreAPI.m in Sources */,
 				92F24E26244873570090D7D3 /* NSDictionary+RTRSettings.m in Sources */,
-				7CE5096C23E861050054E289 /* AbbyyImageCaptureSettings.m in Sources */,
 				7CE5096D23E861050054E289 /* AbbyyMobileCapture.m in Sources */,
-				7CE5096A23E861050054E289 /* NSDictionary+parseReactTypes.m in Sources */,
+				92B13306246AE038000FFDDF /* RTRImageCapturePluginAdapter.m in Sources */,
+				92B13304246AE038000FFDDF /* RTRImageCaptureViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

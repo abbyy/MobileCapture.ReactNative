@@ -2,17 +2,15 @@
 /// ABBYY is a registered trademark or a trademark of ABBYY Software Ltd.
 
 #import "AbbyyMobileCapture.h"
-#import <AbbyyRtrSDK/AbbyyRtrSDK.h>
 #import <React/RCTLog.h>
 #import <React/RCTUtils.h>
 #import "AbbyyImageCapture.h"
 #import "AbbyyCoreAPI.h"
-#import "NSDictionary+parseReactTypes.h"
 #import "RTRPluginConstants.h"
 
-@interface AbbyyMobileCapture ()
+NSString* const RTRPluginErrorDomain = @"com.abbyy.rtr-reactnative-module";
 
-@property (nonatomic, strong, null_resettable) AbbyyImageCapture* imageCapture;
+@interface AbbyyMobileCapture ()
 
 @end
 
@@ -50,14 +48,6 @@
 	return _rtrEngine != nil;
 }
 
-- (AbbyyImageCapture*)imageCapture
-{
-	if(_imageCapture == nil) {
-		_imageCapture = [[AbbyyImageCapture alloc] initWithMobileCapture:self];
-	}
-	return _imageCapture;
-}
-
 // To export a module named AbbyyMobileCapture
 RCT_EXPORT_MODULE();
 
@@ -71,7 +61,9 @@ RCT_REMAP_METHOD(startImageCapture,
 	resolver:(RCTPromiseResolveBlock)resolve
 	rejecter:(RCTPromiseRejectBlock)reject)
 {
-	[self.imageCapture startImageCaptureWithSetings:settings resolver:resolve rejecter:reject];
+	AbbyyImageCapture* imageCapture = [[AbbyyImageCapture alloc]
+		initWithMobileCapture:self settings:settings resolver:resolve rejecter:reject];
+	[imageCapture startImageCapture];
 }
 
 RCT_REMAP_METHOD(recognizeText,

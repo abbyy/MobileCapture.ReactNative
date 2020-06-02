@@ -13,6 +13,42 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable, readonly) RTREngine* rtrEngine;
 
+- (void)startImageCaptureWithSetings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)recognizeTextWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)extractDataWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)detectDocumentBoundaryWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)cropImageWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)rotateImageWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)assessQualityForOcrWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)exportImageWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
+- (void)exportImagesToPdfWithSettings:(NSDictionary*)settings
+	resolver:(RCTPromiseResolveBlock)resolve
+	rejecter:(RCTPromiseRejectBlock)reject;
+
 @end
 
 NS_ASSUME_NONNULL_END

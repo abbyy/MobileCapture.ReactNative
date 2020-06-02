@@ -22,19 +22,58 @@
 
 @implementation NSDictionary (rtr_Mapping)
 
-- (UIInterfaceOrientationMask)rtr_orientationMaskForKey:(NSString*)key;
+#pragma mark - enum mappings
+
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToCameraResolution
 {
-	NSString* value = [self valueForKey:key];
-	if(![value isKindOfClass:[NSString class]]) {
-		return UIInterfaceOrientationMaskAll;
+	static NSDictionary* predefined = nil;
+	if(predefined == nil) {
+		predefined = @{
+			@"hd": @(AUICameraResolutionHD),
+			@"fullhd": @(AUICameraResolutionFullHD),
+			@"4k": @(AUICameraResolution4K),
+		};
 	}
-	if([value isEqualToString:@"portrait"]) {
-		return UIInterfaceOrientationMaskPortrait;
+	return predefined;
+}
+
++ (NSDictionary<NSString*, NSNumber*>*)rtr_cameraResolutionToString
+{
+	static NSDictionary* predefined = nil;
+	if(predefined == nil) {
+		predefined = @{
+			@(AUICameraResolutionHD): @"hd",
+			@(AUICameraResolutionFullHD): @"fullhd",
+			@(AUICameraResolution4K): @"4k",
+		};
 	}
-	if([value isEqualToString:@"landscape"]) {
-		return UIInterfaceOrientationMaskLandscape;
+	return predefined;
+}
+
++ (NSDictionary*)rtr_stringToOrientationMask
+{
+	static NSDictionary* predefined = nil;
+	if(predefined == nil) {
+		predefined = @{
+			@"portrait": @(UIInterfaceOrientationMaskPortrait),
+			@"landscape": @(UIInterfaceOrientationMaskLandscape),
+			@"default": @(UIInterfaceOrientationMaskAll)
+		};
 	}
-	return UIInterfaceOrientationMaskAll;
+	return predefined;
+}
+
++(NSDictionary<NSNumber*,NSString*>*)rtr_orientationMaskToString
+{
+	static NSDictionary* predefined = nil;
+	if(predefined == nil) {
+		predefined = @{
+			@(UIInterfaceOrientationMaskPortrait): @"Portrait",
+			@(UIInterfaceOrientationMaskLandscape): @"Landscape",
+			@(UIInterfaceOrientationMaskAll): @"Default"
+		};
+	}
+	return predefined;
 }
 
 + (NSDictionary*)rtr_stringToExportCompressionLevel
@@ -139,33 +178,59 @@
 	return predefined;
 }
 
-- (RTRCoreAPIExportCompressionLevel)rtr_exportCompressionLevelForKey:(NSString*)key
++ (NSDictionary*)rtr_destinationTypeToString
 {
-	NSDictionary* predefined = [NSDictionary rtr_stringToExportCompressionLevel];
-	NSString* value = [self valueForKey:key];
-	if(![value isKindOfClass:[NSString class]]) {
-		return RTRCoreAPIExportCompressionNormalLevel;
+	static NSDictionary* predefined = nil;
+	if(predefined == nil) {
+		predefined = @{
+			@(RTRImageDestinationTypeBase64): @"base64",
+			@(RTRImageDestinationTypeFile): @"file"
+		};
 	}
-	if([predefined valueForKey:value] != nil) {
-		return (RTRCoreAPIExportCompressionLevel)[predefined[value] integerValue];
-	}
-	return RTRCoreAPIExportCompressionNormalLevel;
+	return predefined;
 }
 
-- (RTRCoreAPIPdfExportCompressionType)rtr_exportCompressionTypeForKey:(NSString*)key
++ (NSDictionary*)rtr_stringToDestinationType
 {
-	NSDictionary* predefined = [NSDictionary rtr_stringToExportCompressionType];
-	NSString* value = [self valueForKey:key];
-	if(![value isKindOfClass:[NSString class]]) {
-		return RTRCoreAPIPdfExportJpgCompression;
+	static NSDictionary* predefined = nil;
+	if(predefined == nil) {
+		predefined = @{
+			@"base64": @(RTRImageDestinationTypeBase64),
+			@"file": @(RTRImageDestinationTypeFile)
+		};
 	}
-	if([predefined valueForKey:value] != nil) {
-		return (RTRCoreAPIPdfExportCompressionType)[predefined[value] integerValue];
-	}
-	return RTRCoreAPIPdfExportJpgCompression;
+	return predefined;
 }
 
-#pragma mark - data capture
++ (NSDictionary*)rtr_exportTypeToString
+{
+	static NSDictionary* predefined = nil;
+	if(predefined == nil) {
+		predefined = @{
+			@(RTRImageCaptureEncodingTypeJpeg2000): @"jpeg2000",
+			@(RTRImageCaptureEncodingTypeJpg): @"jpg",
+			@(RTRImageCaptureEncodingTypePng): @"png",
+			@(RTRImageCaptureEncodingTypePdf): @"pdf"
+		};
+	}
+	return predefined;
+}
+
++ (NSDictionary*)rtr_stringToExportType
+{
+	static NSDictionary* predefined = nil;
+	if(predefined == nil) {
+		predefined = @{
+			@"jpeg2000": @(RTRImageCaptureEncodingTypeJpeg2000),
+			@"jpg": @(RTRImageCaptureEncodingTypeJpg),
+			@"png": @(RTRImageCaptureEncodingTypePng),
+			@"pdf": @(RTRImageCaptureEncodingTypePdf)
+		};
+	}
+	return predefined;
+}
+
+#pragma mark - ctors
 
 + (instancetype)rtr_dictionaryFromDataField:(RTRDataField*)dataField
 {
@@ -184,12 +249,10 @@
 	};
 }
 
-#pragma mark - text capture
-
 + (instancetype)rtr_dictionaryFromTextBlock:(RTRTextBlock*)textBlock
 {
 	return @{
-		@"text": textBlock.rtr_text ?: @"",
+//		@"text": textBlock.rtr_text ?: @"",
 		@"textLines": [textBlock.textLines rtr_map:^id(RTRTextLine* line) {
 			return [NSDictionary rtr_dictionaryFromTextLine:line];
 		}] ?: @[]
@@ -238,8 +301,6 @@
 	return dict;
 }
 
-#pragma mark - mics
-
 + (instancetype)rtr_dictionaryFromRect:(CGRect)areaOfInterest
 {
 	areaOfInterest = CGRectIntegral(areaOfInterest);
@@ -262,18 +323,6 @@
 		@"x": @((NSInteger)point.x),
 		@"y": @((NSInteger)point.y)
 	};
-}
-
-+ (NSDictionary*)rtr_stringToDestinationType
-{
-	static NSDictionary* predefined = nil;
-	if(predefined == nil) {
-		predefined = @{
-			@"base64": @(RTRImageDestinationTypeBase64),
-			@"file": @(RTRImageDestinationTypeFile)
-		};
-	}
-	return predefined;
 }
 
 + (instancetype)rtr_imageSizeDictionaryFromSize:(CGSize)size
@@ -317,35 +366,7 @@
 	return YES;
 }
 
-+ (NSDictionary*)rtr_exportTypeToString
-{
-	static NSDictionary* predefined = nil;
-	if(predefined == nil) {
-		predefined = @{
-			@(RTRImageCaptureEncodingTypeJpeg2000): @"jpeg2000",
-			@(RTRImageCaptureEncodingTypeJpg): @"jpg",
-			@(RTRImageCaptureEncodingTypePng): @"png",
-			@(RTRImageCaptureEncodingTypePdf): @"pdf"
-		};
-	}
-	return predefined;
-}
-
-+ (NSDictionary*)rtr_stringToExportType
-{
-	static NSDictionary* predefined = nil;
-	if(predefined == nil) {
-		predefined = @{
-			@"jpeg2000": @(RTRImageCaptureEncodingTypeJpeg2000),
-			@"jpg": @(RTRImageCaptureEncodingTypeJpg),
-			@"png": @(RTRImageCaptureEncodingTypePng),
-			@"pdf": @(RTRImageCaptureEncodingTypePdf)
-		};
-	}
-	return predefined;
-}
-
-- (CGRect)rtr_asRect:(NSError**)error
+- (BOOL)rtr_asRect:(CGRect*)outRect error:(NSError**)error
 {
 	NSArray* requiredKeys = @[@"top", @"bottom", @"left", @"right"];
 	for(NSString* key in requiredKeys) {
@@ -356,15 +377,171 @@
 					NSLocalizedDescriptionKey: message
 				};
 				*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
-				return CGRectNull;
 			}
+			return NO;
+		}
+		if(![self checkValueForKey:key isKindOfClass:NSNumber.class error:error]) {
+			return NO;
 		}
 	}
 	CGFloat left = [self[@"left"] floatValue];
 	CGFloat right = [self[@"right"] floatValue];
 	CGFloat top = [self[@"top"] floatValue];
 	CGFloat bottom = [self[@"bottom"] floatValue];
-	return CGRectMake(bottom, left, top - bottom, right - left);
+	*outRect = CGRectMake(left, top, right - left, bottom - top);
+	return YES;
+}
+
+#pragma mark - key parsing & typechecking
+
+- (BOOL)checkValueForKey:(NSString*)key isKindOfClass:(Class)class error:(NSError**)error
+{
+	NSObject* value = self[key];
+	if([value isKindOfClass:class]) {
+		return YES;
+	}
+	if(error != nil) {
+		NSString* description = [NSString stringWithFormat:@"Value '%@' for key '%@' is not of class '%@'", value, key, NSStringFromClass(class)];
+		NSDictionary* userInfo = @{NSLocalizedDescriptionKey: description};
+		*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
+	}
+	return NO;
+}
+
+- (BOOL)rtr_parseBool:(NSString*)key defaultValue:(BOOL)defaultValue outValue:(BOOL*)outValue error:(NSError**)error
+{
+	if(self[key] == nil) {
+		*outValue = defaultValue;
+		return YES;
+	}
+	if(![self checkValueForKey:key isKindOfClass:NSNumber.class error:error]) {
+		return NO;
+	}
+	*outValue = [self[key] boolValue];
+	return YES;
+}
+
+- (BOOL)rtr_parseFloat:(NSString*)key defaultValue:(CGFloat)defaultValue outValue:(CGFloat*)outValue error:(NSError**)error
+{
+	if(self[key] == nil) {
+		*outValue = defaultValue;
+		return YES;
+	}
+	if(![self checkValueForKey:key isKindOfClass:NSNumber.class error:error]) {
+		return NO;
+	}
+	*outValue = [self[key] floatValue];
+	return YES;
+}
+
+- (BOOL)rtr_parseInteger:(NSString*)key defaultValue:(NSInteger)defaultValue outValue:(NSInteger*)outValue error:(NSError**)error
+{
+	if(self[key] == nil) {
+		*outValue = defaultValue;
+		return YES;
+	}
+	if(![self checkValueForKey:key isKindOfClass:NSNumber.class error:error]) {
+		return NO;
+	}
+	*outValue = [self[key] integerValue];
+	return YES;
+}
+
+- (BOOL)rtr_parseEnum:(NSString*)key defaultValue:(NSInteger)defaultValue variants:(NSDictionary<NSString*,NSNumber*>*)variants outValue:(NSInteger*)outValue error:(NSError**)error
+{
+	if(self[key] == nil) {
+		*outValue = defaultValue;
+		return YES;
+	}
+	if(![self checkValueForKey:key isKindOfClass:NSString.class error:error]) {
+		return NO;
+	}
+	NSString* string = [self[key] lowercaseString];
+	NSNumber* number = variants[string];
+	if(number == nil) {
+		if(error != nil) {
+			NSString* description = [NSString stringWithFormat:@"Value %@ is invalid. %@ is avaliable.", string, variants.allKeys];
+			*error = [NSError
+				errorWithDomain:RTRPluginErrorDomain
+				code:-1
+				userInfo:@{
+					NSLocalizedDescriptionKey: description
+				}];
+		}
+		return NO;
+	}
+	*outValue = number.integerValue;
+	return YES;
+}
+
+- (BOOL)rtr_parseDocumentSize:(NSString*)key defaultValue:(AUIDocumentSize)defaultValue outValue:(AUIDocumentSize*)outValue error:(NSError**)error
+{
+	if(self[key] == nil) {
+		*outValue = defaultValue;
+		return YES;
+	}
+	if([self[key] isKindOfClass:NSString.class]) {
+		NSString* string = [self[key] lowercaseString];
+		NSDictionary<NSString*, NSValue*>* variants = @{
+			@"a4": @(AUIDocumentSizeA4),
+			@"businesscard": @(AUIDocumentSizeBusinessCard),
+			@"letter": @(AUIDocumentSizeLetter),
+			@"any": @(AUIDocumentSizeAny)
+		};
+		if([variants valueForKey:string] != nil) {
+			*outValue = [variants[string] CGSizeValue];
+			return YES;
+		} else {
+			NSCharacterSet* separators = [NSCharacterSet characterSetWithCharactersInString:@"Xx/ "];
+			NSArray<NSString*>* parts = [string componentsSeparatedByCharactersInSet:separators];
+			float width = 0;
+			float height = 0;
+			BOOL isValueValid = NO;
+			if(parts.count == 2) {
+				isValueValid = ![[NSScanner scannerWithString:parts.firstObject] scanFloat:&width];
+				if(!isValueValid) {
+					isValueValid &= ![[NSScanner scannerWithString:parts.lastObject] scanFloat:&height];
+				}
+			} else {
+				isValueValid = YES;
+			}
+			if(!isValueValid) {
+				*outValue = CGSizeMake(width, height);
+				return YES;
+			} else {
+				NSString* description = @"Failed to parse document size.";
+				if(error != nil) {
+					NSDictionary* userInfo = @{NSLocalizedDescriptionKey: description};
+					*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
+				}
+				return NO;
+			}
+		}
+	} else if([self[key] isKindOfClass:NSDictionary.class]) {
+		return [self[key] rtr_asSize:outValue error:error];
+	} else {
+		if(error != nil) {
+			NSString* description = [NSString stringWithFormat:@"Value on %@ key should be %@ or %@", key, NSString.class, NSDictionary.class];
+			*error = [NSError
+				errorWithDomain:RTRPluginErrorDomain
+				code:-1
+				userInfo:@{
+					NSLocalizedDescriptionKey: description
+				}];
+		}
+		return NO;
+	}
+}
+
+- (NSArray*)rtr_parseArray:(NSString*)key defaultValue:(NSArray*)defaultValue error:(NSError**)error
+{
+    if(self[key] == nil) {
+        return defaultValue;
+    }
+    if(![self checkValueForKey:key isKindOfClass:NSArray.class error:error]) {
+        return nil;
+    }
+    return self[key];
 }
 
 @end
@@ -471,7 +648,17 @@
 		return nil;
 	}
 	return [self rtr_tryMap:^id(NSDictionary* pointDict, NSError** error) {
-
+        if(![pointDict isKindOfClass:NSDictionary.class]) {
+            if(error != nil) {
+				*error = [NSError
+					errorWithDomain:RTRPluginErrorDomain
+					code:-1
+					userInfo:@{
+						NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Point dictionary must be NSDictionary. Found %@ instead", pointDict.class]
+					}];
+			}
+            return nil;
+        }
 		NSNumber* x = pointDict[@"x"];
 		NSNumber* y = pointDict[@"y"];
 		if(x == nil || y == nil) {

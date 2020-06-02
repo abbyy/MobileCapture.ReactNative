@@ -1,7 +1,7 @@
 /// ABBYY® Mobile Capture © 2019 ABBYY Production LLC.
 /// ABBYY is a registered trademark or a trademark of ABBYY Software Ltd.
 
-#import <UIKit/UIKit.h>
+#import <AbbyyUI/AbbyyUI.h>
 #import <AbbyyRtrSDK/AbbyyRtrSDK.h>
 #import "RTRPluginConstants.h"
 
@@ -9,43 +9,52 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSDictionary (rtr_Mapping)
 
-- (UIInterfaceOrientationMask)rtr_orientationMaskForKey:(NSString*)key;
+// enum mappings
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToCameraResolution;
++ (NSDictionary<NSString*, NSNumber*>*)rtr_cameraResolutionToString;
 
-- (RTRCoreAPIExportCompressionLevel)rtr_exportCompressionLevelForKey:(NSString*)key;
++ (NSDictionary<NSNumber*, NSString*>*)rtr_orientationMaskToString;
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToOrientationMask;
 
-- (RTRCoreAPIPdfExportCompressionType)rtr_exportCompressionTypeForKey:(NSString*)key;
++ (NSDictionary<NSNumber*, NSString*>*)rtr_exportCompressionLevelToString;
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToExportCompressionLevel;
 
-+ (NSDictionary*)rtr_exportCompressionLevelToString;
-+ (NSDictionary*)rtr_stringToExportCompressionLevel;
++ (NSDictionary<NSNumber*, NSString*>*)rtr_exportCompressionTypeToString;
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToExportCompressionType;
 
-+ (NSDictionary*)rtr_exportCompressionTypeToString;
-+ (NSDictionary*)rtr_stringToExportCompressionType;
++ (NSDictionary<NSNumber*, NSString*>*)rtr_auiCameraResolutionToString;
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToauiCameraResolution;
 
-+ (NSDictionary*)rtr_auiCameraResolutionToString;
-+ (NSDictionary*)rtr_stringToauiCameraResolution;
++ (NSDictionary<NSNumber*, NSString*>*)rtr_detectionModeToString;
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToDetectionMode;
 
-+ (NSDictionary*)rtr_stringToDetectionMode;
-+ (NSDictionary*)rtr_detectionModeToString;
++ (NSDictionary<NSNumber*, NSString*>*)rtr_exportTypeToString;
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToExportType;
 
-+ (NSDictionary*)rtr_stringToExportType;
-+ (NSDictionary*)rtr_exportTypeToString;
++ (NSDictionary<NSNumber*, NSString*>*)rtr_destinationTypeToString;
++ (NSDictionary<NSString*, NSNumber*>*)rtr_stringToDestinationType;
 
-+ (NSDictionary*)rtr_stringToDestinationType;
+// key parsing
+- (BOOL)rtr_parseInteger:(NSString*)key defaultValue:(NSInteger)defaultValue outValue:(NSInteger*)outValue error:(NSError**)error;
+- (BOOL)rtr_parseBool:(NSString*)key defaultValue:(BOOL)defaultValue outValue:(BOOL*)outValue error:(NSError**)error;
+- (BOOL)rtr_parseFloat:(NSString*)key defaultValue:(CGFloat)defaultValue outValue:(CGFloat*)outValue error:(NSError**)error;
+- (BOOL)rtr_parseEnum:(NSString*)key defaultValue:(NSInteger)defaultValue variants:(NSDictionary<NSString*, NSNumber*>*)variants outValue:(NSInteger*)outValue error:(NSError**)error;
+- (BOOL)rtr_parseDocumentSize:(NSString*)key defaultValue:(AUIDocumentSize)defaultValue outValue:(AUIDocumentSize*)outValue error:(NSError**)error;
+- (nullable NSArray*)rtr_parseArray:(NSString*)key defaultValue:(nullable NSArray*)defaultValue error:(NSError**)error;
 
+// ctors
 + (instancetype)rtr_dictionaryFromRect:(CGRect)areaOfInterest;
-- (CGRect)rtr_asRect:(NSError**)error;
-
 + (instancetype)rtr_dictionaryFromPoint:(CGPoint)point;
-
 + (instancetype)rtr_imageSizeDictionaryFromSize:(CGSize)size;
 + (instancetype)rtr_resolutionDictionaryFromSize:(CGSize)size;
 + (instancetype)rtr_dictionaryFromSize:(CGSize)size;
-- (BOOL)rtr_asSize:(CGSize*)size error:(NSError**)error;
-
 + (instancetype)rtr_dictionaryFromDataField:(RTRDataField*)dataField;
 + (instancetype)rtr_dictionaryFromTextBlock:(RTRTextBlock*)textBlock;
 + (instancetype)rtr_dictionaryFromTextLine:(RTRTextLine*)textLine;
 + (instancetype)rtr_dictionaryWithCharInfo:(RTRCharInfo*)charInfo;
+
+- (BOOL)rtr_asSize:(CGSize*)size error:(NSError**)error;
+- (BOOL)rtr_asRect:(CGRect*)outRect error:(NSError**)error;
 
 @end
 

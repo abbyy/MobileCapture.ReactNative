@@ -4,8 +4,9 @@
 #import "RTRCoreApiPluginAdapter.h"
 #import "RTRPluginConstants.h"
 #import "NSDictionary+RTRSettings.h"
+#import "RTRExportUtilities.h"
+#import "NSDictionary+RTRSettings.h"
 #import <AbbyyRtrSDK/AbbyyRtrSDK.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface NSError (rtr_Shortcuts)
 
@@ -58,17 +59,24 @@
 	NSString* profile = query[RTRDataCaptureProfileKey] ?: @"BusinessCards";
 
 	BOOL isTextOrientationEnabled = [(query[RTRCAEnableTextOrientationDetection] ?: @YES) boolValue];
-	NSArray* recognitionLanguages = query[RTRRecognitionLanguagesKey] ?: @[RTRLanguageNameEnglish];
-
-	NSError* error;
-	CGRect areaOfInterest = query[RTRAreaOfInterestKey] ? [query[RTRAreaOfInterestKey] rtr_asRect:&error] : CGRectZero;
-	if(CGRectEqualToRect(areaOfInterest, CGRectNull)) {
-		if(onError != nil) {
-			onError(error);
+    NSError* error;
+    NSArray* recognitionLanguages = [query rtr_parseArray:RTRRecognitionLanguagesKey defaultValue:@[RTRLanguageNameEnglish] error:&error];
+    if(recognitionLanguages == nil) {
+        if(onError != nil) {
+            onError(error);
+        }
+        return;
+    }
+	
+	CGRect areaOfInterest = CGRectZero;
+	if(query[RTRAreaOfInterestKey] != nil) {
+		if(![query[RTRAreaOfInterestKey] rtr_asRect:&areaOfInterest error:&error]) {
+			if(onError != nil) {
+				onError(error);
+			}
+			return;
 		}
-		return;
 	}
-
 	id<RTRCoreAPI> coreApi = [self.engine createCoreAPI];
 	coreApi.dataCaptureSettings.profile = profile;
 	coreApi.dataCaptureSettings.textOrientationDetectionEnabled = isTextOrientationEnabled;
@@ -135,15 +143,23 @@
 	onSuccess:(void(^)(NSDictionary*))onSuccess
 {
 	BOOL isTextOrientationEnabled = [(query[RTRCAEnableTextOrientationDetection] ?: @YES) boolValue];
-	NSArray* recognitionLanguages = query[RTRRecognitionLanguagesKey] ?: @[RTRLanguageNameEnglish];
+    NSError* error;
+	NSArray* recognitionLanguages = [query rtr_parseArray:RTRRecognitionLanguagesKey defaultValue:@[RTRLanguageNameEnglish] error:&error];
+    if(recognitionLanguages == nil) {
+        if(onError != nil) {
+            onError(error);
+        }
+        return;
+    }
 
-	NSError* error;
-	CGRect areaOfInterest = query[RTRAreaOfInterestKey] ? [query[RTRAreaOfInterestKey] rtr_asRect:&error] : CGRectZero;
-	if(CGRectEqualToRect(areaOfInterest, CGRectNull)) {
-		if(onError != nil) {
-			onError(error);
+	CGRect areaOfInterest = CGRectZero;
+	if(query[RTRAreaOfInterestKey] != nil) {
+		if(![query[RTRAreaOfInterestKey] rtr_asRect:&areaOfInterest error:&error]) {
+			if(onError != nil) {
+				onError(error);
+			}
+			return;
 		}
-		return;
 	}
 	NSString* imageUri = query[RTRCAImageUri];
 	if(imageUri == nil) {
@@ -183,6 +199,7 @@
 		if(onError != nil) {
 			onError(error);
 		}
+        return;
 	}
 	NSMutableDictionary* jsonResult = @{
 		@"text": [[results rtr_map:^id(RTRTextBlock* block) {
@@ -203,25 +220,22 @@
 	onError:(void(^)(NSError*))onError
 	onSuccess:(void(^)(NSDictionary*))onSuccess
 {
-	CGSize documentSize = CGSizeZero;
-	NSDictionary* documentSizeIn = query[RTRICDocumentSizeKey];
+	CGSize documentSize;
 	NSError* error;
-	if(documentSizeIn != nil) {
-		if(![self checkValue:documentSizeIn forKey:RTRICDocumentSizeKey isKindOfClass:NSDictionary.class error:&error]
-			|| ![documentSizeIn rtr_asSize:&documentSize error:&error])
-		{
+	if(![query rtr_parseDocumentSize:RTRICDocumentSizeKey defaultValue:CGSizeZero outValue:&documentSize error:&error]) {
+		if(onError != nil) {
+			onError(error);
+		}
+		return;
+	}
+	CGRect areaOfInterest = CGRectZero;
+	if(query[RTRAreaOfInterestKey] != nil) {
+		if(![query[RTRAreaOfInterestKey] rtr_asRect:&areaOfInterest error:&error]) {
 			if(onError != nil) {
 				onError(error);
 			}
 			return;
 		}
-	}
-	CGRect areaOfInterest = query[RTRAreaOfInterestKey] ? [query[RTRAreaOfInterestKey] rtr_asRect:&error] : CGRectZero;
-	if(CGRectEqualToRect(areaOfInterest, CGRectNull)) {
-		if(onError != nil) {
-			onError(error);
-		}
-		return;
 	}
 	NSString* detectionModeString = query[RTRCABoundaryDetectionMode];
 	RTRDetectDocumentBoundaryMode detectionMode = RTRDetectDocumentBoundaryModeDefault;
@@ -286,9 +300,10 @@
 	onError:(void(^)(NSError*))onError
 	onSuccess:(void(^)(NSDictionary*))onSuccess
 {
-	NSArray* boundaryWithDicts = query[RTRCADocumentBoundary];
+    NSError* error;
+	NSArray* boundaryWithDicts = [query rtr_parseArray:RTRCADocumentBoundary defaultValue:nil error:&error];
+    
 	NSArray* boundary;
-	NSError* error;
 	if(boundaryWithDicts != nil) {
 		boundary = [boundaryWithDicts rtr_transformToNSValuesQuadrangle:&error];
 		if(boundary == nil) {
@@ -397,23 +412,21 @@
 	onError:(void(^)(NSError*))onError
 	onSuccess:(void(^)(NSDictionary*))onSuccess
 {
-	CGSize documentSize = CGSizeZero;
-	NSDictionary* documentSizeIn = query[RTRICDocumentSizeKey];
+	CGSize documentSize;
 	NSError* error;
-	if(documentSizeIn != nil) {
-		if(![self checkValue:documentSizeIn forKey:RTRICDocumentSizeKey isKindOfClass:NSDictionary.class error:&error]
-			|| ![documentSizeIn rtr_asSize:&documentSize error:&error])
-		{
-			if(onError != nil) {
-				onError(error);
-			}
-			return;
+	if(![query rtr_parseDocumentSize:RTRICDocumentSizeKey defaultValue:CGSizeZero outValue:&documentSize error:&error]) {
+		if(onError != nil) {
+			onError(error);
 		}
+		return;
 	}
-	NSArray* boundaryWithDicts = query[RTRCADocumentBoundary];
+	NSArray* boundaryWithDicts = [query rtr_parseArray:RTRCADocumentBoundary defaultValue:nil error:&error];
 	if(boundaryWithDicts == nil) {
 		if(onError != nil) {
-			onError([NSError rtr_missingKeyError:RTRCADocumentBoundary]);
+            if(error == nil) {
+                error = [NSError rtr_missingKeyError:RTRCADocumentBoundary];
+            }
+			onError(error);
 		}
 		return;
 	}
@@ -522,7 +535,7 @@
 		case RTRImageDestinationTypeFile: {
 			NSString* destinationPath = result[RTRCAExportFilePath];
 			if(destinationPath == nil) {
-				destinationPath = [self generatedPathWithExtension:@"pdf"];
+				destinationPath = [RTRExportUtilities generatePathWithExtension:@"pdf"];
 			}
 			RTRFileOutputStream* stream = [[RTRFileOutputStream alloc] initWithFilePath:destinationPath];
 			id<RTRCoreAPIExportToPdfOperation> operation = [coreApi createExportToPdfOperation:stream];
@@ -537,7 +550,7 @@
 			break;
 		}
 	}
-	NSString* uriPrefix = [RTRCoreApiPluginAdapter uriPrefixForDestination:destinationTypeString extension:@"pdf"];
+	NSString* uriPrefix = [RTRExportUtilities uriPrefixForDestination:destinationTypeString extension:@"pdf"];
 	onSuccess(@{
 		RTRCAPdfUri: [uriPrefix stringByAppendingString:pdfUriSuffix]
 	});
@@ -651,36 +664,32 @@
 			RTRICDestinationKey: @"base64"
 		};
 	}
-	NSString* destinationTypeString = [settings[RTRICDestinationKey] lowercaseString];
-	if(destinationTypeString == nil) {
+	NSError* error;
+	NSInteger enumValue;
+	if(![settings
+		rtr_parseEnum:RTRICDestinationKey
+		defaultValue:RTRImageDestinationTypeBase64
+		variants:NSDictionary.rtr_stringToDestinationType
+		outValue:&enumValue
+		error:&error]) {
 		if(onError != nil) {
-			onError([NSError rtr_missingKeyError:RTRICDestinationKey]);
+			onError(error);
 		}
 		return nil;
 	}
-	NSNumber* destinationValue = NSDictionary.rtr_stringToDestinationType[destinationTypeString];
-	if(destinationValue == nil) {
+	RTRImageDestinationType destinationType = enumValue;
+	if(![settings
+		rtr_parseEnum:RTRICExportTypeKey
+		defaultValue:RTRImageCaptureEncodingTypeJpg
+		variants:NSDictionary.rtr_stringToExportType
+		outValue:&enumValue
+		error:&error]) {
 		if(onError != nil) {
-			NSString* description = [NSString
-				stringWithFormat:@"Invalid destination type `%@`. Avaliable values: %@",
-					destinationTypeString,
-					NSDictionary.rtr_stringToDestinationType.allKeys];
-			onError([NSError rtr_errorWithDescription:description]);
+			onError(error);
 		}
 		return nil;
 	}
-	RTRImageDestinationType destination = (RTRImageDestinationType)destinationValue.integerValue;
-	NSString* exportTypeString = [settings[RTRICExportTypeKey] lowercaseString] ?: @"jpg";
-	NSNumber* exportTypeValue = NSDictionary.rtr_stringToExportType[exportTypeString];
-	if(exportTypeValue == nil) {
-		if(onError != nil) {
-			NSString* description = [NSString
-				stringWithFormat:@"Invalid export type `%@`.", exportTypeValue];
-			onError([NSError rtr_errorWithDescription:description]);
-		}
-		return nil;
-	}
-	RTRImageCaptureEncodingType exportType = (RTRImageCaptureEncodingType)exportTypeValue.integerValue;
+	RTRImageCaptureEncodingType exportType = enumValue;
 	NSString* extension;
 	switch(exportType) {
 		case RTRImageCaptureEncodingTypeJpg:
@@ -692,24 +701,37 @@
 		default: {
 			if(onError != nil) {
 				NSString* description = [NSString
-					stringWithFormat:@"Invalid export type `%@`.", exportTypeValue];
+					stringWithFormat:@"Invalid export type `%@`.", NSDictionary.rtr_exportTypeToString[@(exportType)]];
 				onError([NSError rtr_errorWithDescription:description]);
 			}
 			return nil;
 		}
 	}
-	NSString* uriPrefix = [RTRCoreApiPluginAdapter uriPrefixForDestination:destinationTypeString extension:extension];
-	NSString* compressionLevelString = ([settings[RTRICCompressionLevelKey] lowercaseString] ?: @"low");
-	NSNumber* compressionLevelValue = NSDictionary.rtr_stringToExportCompressionLevel[compressionLevelString] ?: @(RTRCoreAPIExportCompressionLowLevel);
-	RTRCoreAPIExportCompressionLevel compressionLevel = (RTRCoreAPIExportCompressionLevel)compressionLevelValue.integerValue;
+	NSString* uriPrefix = [RTRExportUtilities
+		uriPrefixForDestination:NSDictionary.rtr_destinationTypeToString[@(destinationType)]
+		extension:extension];
+
+    if(![settings
+        rtr_parseEnum:RTRICCompressionLevelKey
+        defaultValue:RTRCoreAPIExportCompressionLowLevel
+        variants:NSDictionary.rtr_stringToExportCompressionLevel
+        outValue:&enumValue
+        error:&error]) {
+        if(onError != nil) {
+            onError(error);
+        }
+        return nil;
+    }
+	RTRCoreAPIExportCompressionLevel compressionLevel = enumValue;
 
 	id<RTRCoreAPI> coreApi = [self.engine createCoreAPI];
-	switch(destination) {
+	switch(destinationType) {
 		case RTRImageDestinationTypeBase64: {
 			RTRMemoryOutputStream* stream = [RTRMemoryOutputStream new];
 			id<RTRCoreAPIExportOperation> operation = [self
 				operationWithStream:stream
-				coreApi:coreApi exportType:exportType
+				coreApi:coreApi
+				exportType:exportType
 				compressionLevel:compressionLevel];
 			if(![self addImage:image toOperation:operation errorHandler:onError]) {
 				return nil;
@@ -722,9 +744,15 @@
 		case RTRImageDestinationTypeFile: {
 			NSString* destinationPath = settings[RTRCAExportFilePath];
 			if(destinationPath == nil) {
-				destinationPath = [self generatedPathWithExtension:extension];
+				destinationPath = [RTRExportUtilities generatePathWithExtension:extension];
 			}
-			id<RTROutputStream> stream = [[RTRFileOutputStream alloc] initWithFilePath:destinationPath];
+			id<RTROutputStream> stream = [[RTRFileOutputStream alloc] initWithFilePath:destinationPath error:&error];
+            if(stream == nil) {
+                if(onError != nil) {
+                    onError(error);
+                }
+                return nil;
+            }
 			id<RTRCoreAPIExportOperation> operation = [self
 				operationWithStream:stream
 				coreApi:coreApi exportType:exportType
@@ -777,33 +805,6 @@
 	return YES;
 }
 
-- (NSString*)exportDestinationImageToUri:(UIImage*)image usingCoreApi:(id<RTRCoreAPI>)coreApi withError:(NSError**)error
-{
-	NSString* destinationPath = [self generatedPathWithExtension:@"jpg"];
-	RTRFileOutputStream* stream = [[RTRFileOutputStream alloc] initWithFilePath:destinationPath];
-	id<RTRCoreAPIExportOperation> operation = [coreApi createExportToJpgOperation:stream];
-	if(![operation addPageWithImage:image]) {
-		if(error != nil) {
-			*error = operation.error;
-		}
-		return nil;
-	}
-	if(![operation close]) {
-		if(error != nil) {
-			*error = operation.error;
-		}
-		return nil;
-	}
-	return [@"file://" stringByAppendingString:destinationPath];
-}
-
-- (NSString*)generatedPathWithExtension:(NSString*)extension
-{
-	NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	NSString* destinationFilename = [NSString stringWithFormat:@"%@.%@", NSUUID.UUID.UUIDString, extension];
-	return [documentsDirectory stringByAppendingPathComponent:destinationFilename];
-}
-
 - (nullable UIImage*)imageFromUri:(NSString*)uriString withError:(NSError**)error
 {
 	NSURL* url = [NSURL URLWithString:uriString];
@@ -828,42 +829,6 @@
 		return nil;
 	}
 	return image;
-}
-
-#pragma mark - Utils
-
-+ (NSString*)mimeForFileExtension:(NSString*)extension
-{
-	NSString* UTI = (__bridge_transfer NSString*)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
-		(__bridge CFStringRef)extension, 0);
-	NSString* mimeType = (__bridge_transfer NSString*)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)UTI,
-		kUTTagClassMIMEType);
-	return mimeType;
-}
-
-+ (NSString*)uriPrefixForDestination:(NSString*)destination extension:(NSString*)extension;
-{
-	if([destination.lowercaseString isEqualToString:@"base64"]) {
-		return [NSString stringWithFormat:@"data:%@;base64,", [self mimeForFileExtension:extension]];
-	} else if([destination.lowercaseString isEqualToString:@"file"]){
-		return @"file://";
-	} else {
-		NSParameterAssert([destination isEqualToString:@"base64"] || [destination isEqualToString:@"file"]);
-		return @"";
-	}
-}
-
-- (BOOL)checkValue:(id)value forKey:(NSString*)key isKindOfClass:(Class)class error:(NSError**)error
-{
-	if([value isKindOfClass:class]) {
-		return YES;
-	}
-	if(error != nil) {
-		NSString* description = [NSString stringWithFormat:@"Value '%@' for key '%@' is not of class '%@'", value, key, NSStringFromClass(class)];
-		NSDictionary* userInfo = @{NSLocalizedDescriptionKey: description};
-		*error = [NSError errorWithDomain:RTRPluginErrorDomain code:-1 userInfo:userInfo];
-	}
-	return NO;
 }
 
 @end
