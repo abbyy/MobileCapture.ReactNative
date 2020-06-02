@@ -1,13 +1,17 @@
 {
   "name": "react-native-abbyy-mobile-capture-sample-core-api",
-  "version": "1.0.2",
-  "private": true,
+  "version": "1.0.3",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abbyy/MobileCapture.ReactNative.git",
+    "baseUrl": "https://github.com/abbyy/MobileCapture.ReactNative"
   },
   "keywords": [
     "react-native",
