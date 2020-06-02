@@ -1,7 +1,7 @@
 {
   "name": "react-native-abbyy-mobile-capture",
   "title": "React Native ABBYY Mobile Capture",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React Native ABBYY Mobile Capture",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "keywords": [
     "react-native",
-    "abbyy", 
+    "abbyy",
     "mobile",
     "capture",
     "mobile capture",
@@ -48,6 +48,5 @@
     "react": "^16.8.3",
     "react-native": "^0.60.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
