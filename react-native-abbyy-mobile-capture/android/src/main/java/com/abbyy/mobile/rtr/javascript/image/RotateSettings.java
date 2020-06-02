@@ -6,9 +6,9 @@ package com.abbyy.mobile.rtr.javascript.image;
 import java.util.Objects;
 
 public class RotateSettings {
-	public int angle = 0;
+	int angle = 0;
 
-	public ExportSettings exportSettings = null;
+	ExportSettings exportSettings = null;
 
 	@Override
 	public boolean equals( Object o )

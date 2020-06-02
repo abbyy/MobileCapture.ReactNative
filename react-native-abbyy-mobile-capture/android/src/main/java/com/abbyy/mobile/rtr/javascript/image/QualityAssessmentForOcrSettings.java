@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class QualityAssessmentForOcrSettings {
 
-	public Point[] documentBoundary = null;
+	Point[] documentBoundary = null;
 
 	@Override
 	public boolean equals( Object o )

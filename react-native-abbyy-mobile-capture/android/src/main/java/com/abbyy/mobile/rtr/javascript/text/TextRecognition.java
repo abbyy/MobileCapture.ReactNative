@@ -64,6 +64,8 @@ public class TextRecognition {
 			textRecognitionSettings.setRecognitionLanguage( settings.languages );
 
 			recognizeTextOnImage( image, api, callback );
+		} catch( Exception exception ) {
+			callback.onError( ERROR_TAG, "Error: " + exception.getMessage(), exception );
 		}
 	}
 

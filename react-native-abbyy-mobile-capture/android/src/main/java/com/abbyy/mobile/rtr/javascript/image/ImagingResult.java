@@ -64,13 +64,15 @@ class ImagingResult {
 	}
 
 	public static JSONObject getQualityAssessmentForOcrResult(
-		@NonNull IImageCaptureService.QualityAssessmentForOcrBlock[] qualityAssessmentForOcrBlocks
+		@Nullable IImageCaptureService.QualityAssessmentForOcrBlock[] qualityAssessmentForOcrBlocks
 	) throws JSONException
 	{
 		JSONObject json = new JSONObject();
 		JSONArray jsonBlocksArray = new JSONArray();
-		for( IImageCaptureService.QualityAssessmentForOcrBlock block : qualityAssessmentForOcrBlocks ) {
-			jsonBlocksArray.put( toJson( block ) );
+		if( qualityAssessmentForOcrBlocks != null ) {
+			for (IImageCaptureService.QualityAssessmentForOcrBlock block : qualityAssessmentForOcrBlocks) {
+				jsonBlocksArray.put(toJson(block));
+			}
 		}
 		json.put( QUALITY_ASSESSMENT_FOR_OCR_BLOCKS, jsonBlocksArray );
 		return json;

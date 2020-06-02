@@ -64,6 +64,8 @@ public class DataCapture {
 			textRecognitionSettings.setRecognitionLanguage( settings.languages );
 
 			extractDataOnImage( image, api, callback );
+		} catch( Exception exception ) {
+			callback.onError( ERROR_TAG, "Error: " + exception.getMessage(), exception );
 		}
 	}
 

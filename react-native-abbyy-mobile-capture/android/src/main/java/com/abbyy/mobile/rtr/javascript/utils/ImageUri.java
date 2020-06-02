@@ -6,7 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
+import androidx.exifinterface.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
@@ -49,8 +49,7 @@ public class ImageUri {
 		}
 	}
 
-	private static Bitmap fromBase64( String stringUri ) throws IOException
-	{
+	private static Bitmap fromBase64( String stringUri ) {
 		// indexOf is byte offset, because scheme contains chars which are represented with one byte in getBytes().
 		int offset = stringUri.indexOf( ',' ) + 1;
 		byte[] uriBytes = stringUri.getBytes();
@@ -78,10 +77,16 @@ public class ImageUri {
 	{
 		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ) {
 			try( InputStream inputStream = context.getContentResolver().openInputStream( uri ) ) {
+				if( inputStream == null) {
+					return ExifInterface.ORIENTATION_NORMAL;
+				}
 				ExifInterface exifInterface = new ExifInterface( inputStream );
 				return exifInterface.getAttributeInt( ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL );
 			}
 		} else {
+			if( uri.getPath() == null) {
+				return ExifInterface.ORIENTATION_NORMAL;
+			}
 			ExifInterface exifInterface = new ExifInterface( uri.getPath() );
 			return exifInterface.getAttributeInt( ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL );
 		}
