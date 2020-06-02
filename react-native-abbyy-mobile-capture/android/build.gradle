@@ -36,8 +36,6 @@ buildscript {
             classpath 'com.android.tools.build:gradle:3.4.1'
             // https://github.com/bjoernQ/unmock-plugin
             classpath 'de.mobilej.unmock:UnMockPlugin:0.7.3'
-            // https://github.com/arturdm/jacoco-android-gradle-plugin
-            classpath "com.dicedmelon.gradle:jacoco-android:0.1.4"
         }
     }
 }
@@ -45,18 +43,6 @@ buildscript {
 if (project == rootProject) {
     // https://github.com/bjoernQ/unmock-plugin
     apply plugin: 'de.mobilej.unmock'
-    apply plugin: 'jacoco-android'
-
-    jacoco {
-        toolVersion = '0.8.4'
-    }
-
-    jacocoAndroidUnitTestReport {
-        csv.enabled false
-        xml.enabled false
-        html.enabled true
-        excludes += ['android/**', 'androidx/**', ]
-    }
 }
 
 apply plugin: 'com.android.library'
@@ -111,6 +97,7 @@ dependencies {
     // nor does it pose any restrictions to the language you are using.
     // This is a regular library dependency.
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.31"
+    implementation 'androidx.exifinterface:exifinterface:1.2.0'
 }
 
 // For testing
