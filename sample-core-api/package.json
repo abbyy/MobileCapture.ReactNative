@@ -60,6 +60,9 @@
     "metro-react-native-babel-preset": "^0.58.0",
     "react-test-renderer": "16.9.0"
   },
+  "resolutions": {
+    "**/**/logkitty": "^0.7.1"
+  },
   "jest": {
     "preset": "react-native"
   }
